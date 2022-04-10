@@ -331,7 +331,7 @@ class FL:
             #aggregated global weights
             scores = np.zeros(len(local_weights))
             # Expected malicious peers
-            f = int(self.num_peers*self.attackers_ratio)
+            f = int(self.attackers_ratio*len(local_weights))
             if rule == 'fedavg':
                 cur_time = time.time()
                 global_weights = average_weights(local_weights, [1 for i in range(len(local_weights))])
@@ -346,8 +346,7 @@ class FL:
                 cpu_runtimes.append(time.time() - cur_time)
             elif rule == 'tmean':
                     cur_time = time.time()
-                    trim_ratio = self.attackers_ratio*self.num_peers/len(selected_peers)
-                    global_weights = trimmed_mean(local_weights, trim_ratio = trim_ratio)
+                    global_weights = trimmed_mean(local_weights, trim_ratio = self.attackers_ratio)
                     cpu_runtimes.append(time.time() - cur_time)
             elif rule == 'mkrum':
                 cur_time = time.time()
